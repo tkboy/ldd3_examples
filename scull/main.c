@@ -14,7 +14,10 @@
  *
  */
 
+/* 这个头文件config.h新版kernel已经没有了 */
+/*
 #include <linux/config.h>
+*/
 #include <linux/module.h>
 #include <linux/moduleparam.h>
 #include <linux/init.h>
@@ -553,7 +556,13 @@ struct file_operations scull_fops = {
 	.llseek =   scull_llseek,
 	.read =     scull_read,
 	.write =    scull_write,
+/*
+	编译错误：
+	新版本的kernel(linux/fs.h)已对struct file_operations做了改动，
+	先前的ioctl被unlocked_ioctl取代
 	.ioctl =    scull_ioctl,
+*/
+	.unlocked_ioctl =    scull_ioctl,
 	.open =     scull_open,
 	.release =  scull_release,
 };
@@ -649,7 +658,13 @@ int scull_init_module(void)
 	for (i = 0; i < scull_nr_devs; i++) {
 		scull_devices[i].quantum = scull_quantum;
 		scull_devices[i].qset = scull_qset;
+/*
+		编译错误：
+		将init_MUTEX(lock)改为sema_init(lock, 1)
+		
 		init_MUTEX(&scull_devices[i].sem);
+*/
+		sema_init(&scull_devices[i].sem, 1);
 		scull_setup_cdev(&scull_devices[i], i);
 	}
 
