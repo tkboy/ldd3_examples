@@ -1,0 +1,18 @@
+scull
+=====
+一个全局的且持久的内存区域
+
+原始目录说明 Default Directory
+------------------------------
+    scull.h
+    
+    access.c
+    pipe.c
+    main.c
+    
+    scull.init
+    scull_load      手动加载模块并自动创建设备节点的脚本
+    scull_unload    卸载脚本
+    
+    Makefile        make build
+    README.mkdn     本文档
