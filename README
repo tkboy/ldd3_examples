@@ -1,26 +1,26 @@
 3.0.0 test in ubuntu
-==========
+====================
 
 原始目录说明 Default Directory
-----------
-include
-misc-modules
-pci
-sbull
-scullc
-scullp
-short
-simple
-snull
-usb
-lddbus
-misc-progs
-README
-scull
-sculld
-scullv
-shortprint
-skull
-tty
-Makefile
-LICENSE
+-----------------------------
+    include/        
+    lddbus/
+    misc-modules/
+    misc-progs/
+    pci/
+    sbull/
+    scull/          一个全局且持久的内存区域组成
+    scullc/
+    sculld/
+    scullp/
+    scullv/
+    short/
+    shortprint/
+    simple/
+    skull/
+    snull/
+    tty/
+    usb/
+    Makefile
+    LICENSE
+    README          本文档
