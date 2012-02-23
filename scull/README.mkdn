@@ -1,16 +1,20 @@
 scull
 =====
-一个全局的且持久的内存区域
+实现了6种不同特性的字符设备
 
 原始目录说明 Default Directory
 ------------------------------
-    scull.h
+    scull.h         声明了main.c中实现的主要I/O方法，以在access.c和pipe.c中复用
     
-    access.c
-    pipe.c          该驱动程序使用了一个包含两个等待队列和一个缓冲区的设备结构
-    main.c          一个全局的且持久的内存区域
+    access.c        实现了4种不同的访问控制的设备结构
+                      scullsingle - 一次只允许一个设备
+                      sculluid    - 每次只让一个用户多次访问
+                      scullwuid   - 与sculluid相比，其他用户访问时，会等待
+                      scullpriv   - 打开设备时，会创建设备的不同私有副本
+    pipe.c          该驱动程序使用了一个包含两个等待队列和一个缓冲区的设备结构 scullpipe
+    main.c          一个全局的且持久的内存区域的设备结构 scull
     
-    scull.init
+    scull.init      init时的启动脚本
     scull_load      手动加载模块并自动创建设备节点的脚本
     scull_unload    卸载脚本
     
