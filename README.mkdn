@@ -9,11 +9,11 @@
     misc-progs/
     pci/
     sbull/
-    scull/          一个全局且持久的内存区域组成
-    scullc/
+    scull/          实现了6种不同特性的字符设备，内存皆由kmalloc分配
+    scullc/         基于slab高速缓存( kmem_cache_create )的scull
     sculld/
-    scullp/
-    scullv/
+    scullp/         使用整页( __get_free_page )分配的scull
+    scullv/         使用vmalloc分配的虚拟地址的scull
     short/
     shortprint/
     simple/
