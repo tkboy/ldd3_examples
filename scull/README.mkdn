@@ -7,8 +7,8 @@ scull
     scull.h
     
     access.c
-    pipe.c
-    main.c
+    pipe.c          该驱动程序使用了一个包含两个等待队列和一个缓冲区的设备结构
+    main.c          一个全局的且持久的内存区域
     
     scull.init
     scull_load      手动加载模块并自动创建设备节点的脚本
