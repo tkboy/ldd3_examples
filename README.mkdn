@@ -3,47 +3,38 @@
 
 原始目录说明 Default Directory
 ------------------------------
-    
+### 2 构造和运行模块
+* skull/          说明了模块的初始化和关闭方式
 ### 3-6 高级字符设备
 * scull/          实现了6种不同特性的字符设备，内存皆由kmalloc分配
-    
 ### 8 内存分配
 * scullc/         基于slab高速缓存( kmem_cache_create )的scull
 * scullp/         使用整页( __get_free_page )分配的scull
 * scullv/         使用vmalloc分配的虚拟地址的scull
-    
 ### 9 与硬件通信
 * short/          Simple Hardware Operations and Raw Tests 读写并口的几个8位端口
-    
 ### 10 中断处理
 * shortprint/     
-    
 ### 12 PCI驱动程序
 * pci/
-    
 ### 13 USB驱动程序
 * usb/
-    
 ### 14 Linux设备模型
 * sculld/         scullp的另外一个版本，实现了通常的内存区域
-    
+* lddbus/         一个虚拟总线的实现
+  include/
 ### 15 内存映射和DMA
 * simple/         Simple Implementation Mapping Pages with Little Enthusiasm
-    
 ### 16 块设备驱动程序
 * sbull/          实现了一个虚拟磁盘驱动器
-    
 ### 17 网络驱动程序
 * snull/          一个基于内存的模块化的网络接口实例
-    
 ### 18 TTY驱动程序
 * tty/            
-    
-- include/        
-- lddbus/
+### 其他模块
 - misc-modules/
 - misc-progs/
-- skull/
+### 其他文件
 - Makefile
 - LICENSE
 - README          本文档
