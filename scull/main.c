@@ -556,13 +556,12 @@ struct file_operations scull_fops = {
 	.llseek =   scull_llseek,
 	.read =     scull_read,
 	.write =    scull_write,
-/*
-	编译错误：
-	新版本的kernel(linux/fs.h)已对struct file_operations做了改动，
-	先前的ioctl被unlocked_ioctl取代
-	.ioctl =    scull_ioctl,
-*/
-	.unlocked_ioctl =    scull_ioctl,
+	/*
+	 * 编译错误：原为“.ioctl =    scull_ioctl,”
+	 * 新版本的kernel(linux/fs.h)已对struct file_operations做了改动，
+	 * 先前的ioctl字段已被unlocked_ioctl字段取代
+	 */
+	.unlocked_ioctl = scull_ioctl,
 	.open =     scull_open,
 	.release =  scull_release,
 };
@@ -626,16 +625,16 @@ int scull_init_module(void)
 	int result, i;
 	dev_t dev = 0;
 
-/*
- * Get a range of minor numbers to work with, asking for a dynamic
- * major unless directed otherwise at load time.
- */
+	/*
+	 * Get a range of minor numbers to work with, asking for a dynamic
+	 * major unless directed otherwise at load time.
+	 * 注册字符设备号
+	 */
 	if (scull_major) {
 		dev = MKDEV(scull_major, scull_minor);
 		result = register_chrdev_region(dev, scull_nr_devs, "scull");
 	} else {
-		result = alloc_chrdev_region(&dev, scull_minor, scull_nr_devs,
-				"scull");
+		result = alloc_chrdev_region(&dev, scull_minor, scull_nr_devs, "scull");
 		scull_major = MAJOR(dev);
 	}
 	if (result < 0) {
@@ -646,6 +645,7 @@ int scull_init_module(void)
         /* 
 	 * allocate the devices -- we can't have them static, as the number
 	 * can be specified at load time
+	 * 因为不知道要创建多少设备，所以动态分配设备结构的内存
 	 */
 	scull_devices = kmalloc(scull_nr_devs * sizeof(struct scull_dev), GFP_KERNEL);
 	if (!scull_devices) {
@@ -658,20 +658,18 @@ int scull_init_module(void)
 	for (i = 0; i < scull_nr_devs; i++) {
 		scull_devices[i].quantum = scull_quantum;
 		scull_devices[i].qset = scull_qset;
-/*
-		编译错误：
-		将init_MUTEX(lock)改为sema_init(lock, 1)
-		
-		init_MUTEX(&scull_devices[i].sem);
-*/
+		/*
+		 * 编译错误：sema_init 一行原为 init_MUTEX(&scull_devices[i].sem);
+		 * 在最新的代码中，该宏已被移除，其原本展开应为seme_init(xx, 1)
+		 */
 		sema_init(&scull_devices[i].sem, 1);
 		scull_setup_cdev(&scull_devices[i], i);
 	}
 
         /* At this point call the init function for any friend device */
 	dev = MKDEV(scull_major, scull_minor + scull_nr_devs);
-	dev += scull_p_init(dev);
-	dev += scull_access_init(dev);
+	dev += scull_p_init(dev); 	/* 实现在pipe.c中 */
+	dev += scull_access_init(dev); 	/* 实现在access.c中 */
 
 #ifdef SCULL_DEBUG /* only when debugging */
 	scull_create_proc();
